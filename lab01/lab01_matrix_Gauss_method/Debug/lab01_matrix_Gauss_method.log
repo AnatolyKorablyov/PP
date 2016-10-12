@@ -1,0 +1,12 @@
+﻿  MultiThreadRank.cpp
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(70): warning C4018: '<': signed/unsigned mismatch
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(72): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(119): warning C4018: '<': signed/unsigned mismatch
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(122): warning C4018: '<': signed/unsigned mismatch
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(124): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(162): warning C4018: '<': signed/unsigned mismatch
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(170): warning C4018: '<': signed/unsigned mismatch
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(172): warning C4018: '<': signed/unsigned mismatch
+c:\users\anatoly\documents\visual_studio_2015\projects\pp\lab01_matrix_gauss_method\lab01_matrix_gauss_method\multithreadrank.cpp(174): warning C4018: '<': signed/unsigned mismatch
+  lab01_matrix_Gauss_method.vcxproj -> C:\Users\Anatoly\Documents\visual_studio_2015\Projects\PP\lab01_matrix_Gauss_method\Debug\lab01_matrix_Gauss_method.exe
+  lab01_matrix_Gauss_method.vcxproj -> C:\Users\Anatoly\Documents\visual_studio_2015\Projects\PP\lab01_matrix_Gauss_method\Debug\lab01_matrix_Gauss_method.pdb (Partial PDB)
