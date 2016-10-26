@@ -3,57 +3,56 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include <sstream>
 #include <vector>
+#include "OneThreadRank.h"
 #include "MultiThreadRank.h"
+#include "Matrix.h"
 
 using namespace std;
 
-int GetRang(std::vector<vector<float>> &matrix)
+bool CheckStrToNumber(const std::string & numberStr)
 {
-	int rank = 4;
-	vector<bool> line_used(4);
-	for (int i = 0; i < 4; ++i)
-	{
-		int j;
-		for (j = 0; j < 4; ++j)
-			if (!line_used[j] && abs(matrix[j][i]) > EPS)
-				break;
-		if (j == 4)
-			--rank;
-		else
-		{
-			line_used[j] = true;
-			for (int p = i + 1; p< 4; ++p)
-				matrix[j][p] /= matrix[j][i];
-			for (int k = 0; k< 4; ++k)
-				if (k != j && abs(matrix[k][i]) > EPS)
-					for (int p = i + 1; p< 4; ++p)
-						matrix[k][p] -= matrix[j][p] * matrix[k][i];
-		}
-	}
-	return rank;
+	int number = atoi(numberStr.c_str());
+	std::stringstream ss;
+	ss << number;
+	return (numberStr == ss.str());
 }
-
 
 int main(int argc, char * argv[])
 {
 	if (argc == 3)
 	{
-		size_t time = clock();
-		CMultiThreadRank asad(std::atoi(argv[1]), std::atoi(argv[2]));
-		size_t finishTime = clock();
-		double processTime = (finishTime - time) / 1000.0;
-		std::cout << "Time: " << processTime << std::endl;
+		if (CheckStrToNumber(argv[1]) && CheckStrToNumber(argv[2]))
+		{
+			size_t time = clock();
+			CMatrix matr;
+			matr.CreateMatrix(std::atoi(argv[1]));
+
+			if (std::atoi(argv[2]) == 1)
+			{
+				COneThreadRank startGauss;
+				startGauss.GetRank(matr.GetMatrix());
+			}
+			else
+			{
+				CMultiThreadRank startGauss(std::atoi(argv[2]));
+				startGauss.GetRank(matr.GetMatrix());
+			}
+			CMultiThreadRank startMatrix(std::atoi(argv[2]));
+			size_t finishTime = clock();
+			double processTime = (finishTime - time) / 1000.0;
+			std::cout << "Time: " << processTime << std::endl;
+		}
+		else
+		{
+			std::cout << "Недопустимые параметры, введены не числа. Example: lab.exe 3 2" << std::endl;
+		}
 
 	}
 	else
 	{
-		size_t time = clock();
-		CMultiThreadRank asad(10, 3);
-		size_t finishTime = clock();
-		double processTime = (finishTime - time) / 1000.0;
-		std::cout << "Time: " << processTime << std::endl;
-
+		std::cout << "Недопустимые параметры, некорректно введены аргументы. Example: lab.exe 3 2, где 3 - размер матрицы, 2 - кол-во потоков!!!" << std::endl;
 	}
 
     return 0;

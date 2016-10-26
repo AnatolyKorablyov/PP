@@ -1,26 +1,25 @@
 #pragma once
 #include "stdafx.h"
+#include "RankGaussMethod.h"
 
-const double EPS = 1E-9;
 
-class CMultiThreadRank
+class CMultiThreadRank : public CRankGaussMethod
 {
+
 public:
 	CMultiThreadRank();
-	CMultiThreadRank(unsigned n, unsigned threads);
+	CMultiThreadRank(unsigned threads);
+	int GetRank(Matrix matr) override;
+	void CalcRankWithRange(size_t numThread);
 	~CMultiThreadRank();
-	std::vector<std::vector<float>> CreateMatrix(unsigned n);
-	//std::vector<std::vector<float>> CreateMatrix(unsigned n, size_t threads);
-	void PrintMatrix(const std::vector<std::vector<float>>& matrix);
-	void FillMatrix(size_t num);
-	void MultiThreads();
+
 private:
-	std::vector<std::vector<float>> matrix;
-	std::vector<bool> line_used;
-	//int numThread;
-	size_t numThreads = 0;
-	int rank;
-	size_t matrixSize = 0;
-	std::vector<int> threads;
+	Matrix m_matrix;
+	std::vector<bool> m_line_used;
+	size_t m_numThreads = 0;
+	
+	size_t m_matrixSize = 0;
+	std::vector<int> m_threads;
+
 };
 

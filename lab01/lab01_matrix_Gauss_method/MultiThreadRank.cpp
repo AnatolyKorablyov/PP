@@ -1,196 +1,88 @@
 #include "MultiThreadRank.h"
+
+
 #include <thread>
 
-void StartFill(CMultiThreadRank * mat, size_t num)
+void StartCalcRank(CMultiThreadRank * mat, size_t num)
 {
-	mat->FillMatrix(num);
+	mat->CalcRankWithRange(num);
 }
 
 CMultiThreadRank::CMultiThreadRank()
 {
 }
 
-CMultiThreadRank::CMultiThreadRank(unsigned n, unsigned threads)
-{
-	
-	/*
-	matrix.resize(4);
-	matrix[0].push_back(2);
-	matrix[0].push_back(1);
-	matrix[0].push_back(-2);
-	matrix[0].push_back(6);
-	
-	matrix[1].push_back(3);
-	matrix[1].push_back(1);
-	matrix[1].push_back(-1);
-	matrix[1].push_back(-1);				 
-
-	matrix[2].push_back(1);
-	matrix[2].push_back(-1);
-	matrix[2].push_back(2);
-	matrix[2].push_back(-7);
-
-	matrix[3].push_back(7);
-	matrix[3].push_back(2);
-	matrix[3].push_back(-4);
-	matrix[3].push_back(11);
-	  */
-	
-	numThreads = threads;
-
-	matrix = CreateMatrix(n);
-	matrixSize = n;
-	PrintMatrix(matrix);
-	line_used.resize(matrixSize);
-
-	
-	MultiThreads();
+CMultiThreadRank::CMultiThreadRank(unsigned threads)
+{							 
+	m_numThreads = threads;
 }
 
-
-CMultiThreadRank::~CMultiThreadRank()
+int CMultiThreadRank::GetRank(Matrix matr)
 {
-}
+	m_matrix = matr;
+	m_matrixSize = m_matrix.size();
+	m_line_used.resize(m_matrixSize);
 
-void CreateLine(std::vector<std::vector<float>> & matrix, unsigned n, size_t numLine)
-{
-	matrix[numLine].resize(n);
-	for (int j = 0; j < n; ++j)
+	unsigned minSize = m_matrixSize;
+	unsigned maxSize = m_matrix[0].size();
+	if (minSize > m_matrix[0].size())
 	{
-		matrix[numLine][j] = rand() % 10;
-	}
-}
-
-void CreateLinesRange(std::vector<std::vector<float>> & matrix, unsigned minRange, unsigned maxRange, unsigned n)
-{
-	for (unsigned i = minRange; i < maxRange; ++i)
-	{
-		CreateLine(matrix, n, i);
-	}
-}
-
-std::vector<std::vector<float>> CMultiThreadRank::CreateMatrix(unsigned n)
-{
-	/*
-	std::vector<std::thread> hThreads;
-	hThreads.resize(numThreads);
-
-	std::vector<std::vector<float>> matrix;
-	matrix.resize(n);
-
-	for (int i = 0; i <= numThreads - 1; ++i)
-	{
-		size_t minSize = n / numThreads * i;
-		size_t maxSize;
-
-		if (i == (numThreads - 1))
-		{
-			maxSize = n;
-		}
-		else
-		{
-			maxSize = minSize + n / numThreads;
-		}
-
-		hThreads[i] = std::thread(CreateLinesRange, matrix, minSize, maxSize, n);
+		minSize = m_matrix[0].size();
+		maxSize = m_matrix.size();
 	}
 
-	for (auto &it : hThreads)
-	{
-		it.join();		
-	}
-
-	  */
-	std::vector<std::vector<float>> matrix;
-	matrix.resize(n);
-
-	for (auto i = 0; i < n; ++i)
-	{
-		matrix[i].resize(n);
-		for (int j = 0; j < n; ++j)
-		{
-			matrix[i][j] = rand() % 10;
-		}
-	}
-	return matrix;
-}
-
-void CMultiThreadRank::PrintMatrix(const std::vector<std::vector<float>> & matrix)
-{
-	for (size_t i = 0; i < matrix.size(); ++i)
-	{
-		for (size_t j = 0; j < matrix[i].size(); ++j)
-		{
-			std::cout << matrix[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-}
-
-void CMultiThreadRank::FillMatrix(size_t num)
-{
-	auto threadNumber = num;
-	
-	size_t minSize = matrix.size() / numThreads * threadNumber;
-	size_t maxSize;									
-
-	if (threadNumber == (numThreads - 1))
-	{ 
-		maxSize = matrix.size();
-	}								     
-	else
-	{
-		maxSize = minSize + matrix.size() / numThreads;
-	}
-	
-	for (auto i = minSize; i < maxSize; ++i)
-	{
-		int j;
-		for (j = 0; j < matrixSize; ++j)
-			if (!line_used[j] && abs(matrix[j][i]) > EPS)
-				break;
-		if (j == matrixSize)
-			--rank;
-		else
-		{
-			line_used[j] = true;
-			for (int p = i + 1; p < matrixSize; ++p)
-				matrix[j][p] /= matrix[j][i];
-			for (int k = 0; k < matrixSize; ++k)
-				if (k != j && abs(matrix[k][i]) > EPS)
-					for (int p = i + 1; p < matrixSize; ++p)
-						matrix[k][p] -= matrix[j][p] * matrix[k][i];
-		}
-	}
-}
-
-
-void CMultiThreadRank::MultiThreads()
-{
-	unsigned minSize = matrix.size();
-	unsigned maxSize = matrix[0].size();
-	if (minSize > matrix[0].size())
-	{
-		minSize = matrix[0].size();
-		maxSize = matrix.size();
-	}
-
-	rank = minSize;
+	m_rank = minSize;
 
 	std::vector<std::thread> hThreads;
-	hThreads.resize(numThreads);
+	hThreads.resize(m_numThreads);
 
-	std::cout << "Threads = " << numThreads << std::endl;
-	for (size_t i = 0; i <= numThreads - 1; i++)
+	for (size_t i = 0; i <= m_numThreads - 1; i++)
 	{
-		hThreads[i] = std::thread(StartFill, this, i);
+		hThreads[i] = std::thread(StartCalcRank, this, i);
 	}
 	for (auto &it : hThreads)
 	{
 		it.join();
 	}
-	std::cout << "rank: " << rank << std::endl;
+	
+	return m_rank;
+}
 
-	//WaitForMultipleObjects(numThreads, hThreads, TRUE, INFINITE);
+void CMultiThreadRank::CalcRankWithRange(size_t numThread)
+{
+	size_t minSize = m_matrix.size() / m_numThreads * numThread;
+	size_t maxSize;
+
+	if (numThread == (m_numThreads - 1))
+	{
+		maxSize = m_matrix.size();
+	}
+	else
+	{
+		maxSize = minSize + m_matrix.size() / m_numThreads;
+	}
+
+	for (auto i = minSize; i < maxSize; ++i)
+	{
+		size_t j;
+		for (j = 0; j < m_matrixSize; ++j)
+			if (!m_line_used[j] && abs(m_matrix[j][i]) > EPS)
+				break;
+		if (j == m_matrixSize)
+			--m_rank;
+		else
+		{
+			m_line_used[j] = true;
+			for (auto p = i + 1; p < m_matrixSize; ++p)
+				m_matrix[j][p] /= m_matrix[j][i];
+			for (size_t k = 0; k < m_matrixSize; ++k)
+				if (k != j && abs(m_matrix[k][i]) > EPS)
+					for (unsigned p = i + 1; p < m_matrixSize; ++p)
+						m_matrix[k][p] -= m_matrix[j][p] * m_matrix[k][i];
+		}
+	}
+}
+
+CMultiThreadRank::~CMultiThreadRank()
+{
 }
