@@ -22,7 +22,7 @@ namespace
 {
 	const float radius = 10.f;
 
-	void TransmitDataOnServer(size_t Nmax, double Pi, std::string const &processName, std::string const &type)
+	void TransmitDataOnServer(size_t Nmax, double Pi, std::string const &processName)
 	{
 		std::string info = processName + ", " + NumberToString(Nmax) + ", " + NumberToString(Pi);
 
@@ -62,9 +62,8 @@ int main(int argc, char *argv[])
 {
 	size_t iterationsNumber = atoi(argv[1]);
 	std::string processName = std::string(argv[2]);
-	std::string type = std::string(argv[3]);
 	
-	TransmitDataOnServer(iterationsNumber, GetPi(iterationsNumber), processName, type);
+	TransmitDataOnServer(iterationsNumber, GetPi(iterationsNumber), processName);
 
 	system("pause");
 }

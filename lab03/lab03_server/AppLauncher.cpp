@@ -80,5 +80,6 @@ void CAppLauncher::WaitMessages()
 	{
 		std::cout << mes << std::endl;
 	}
+	system("pause");
 
 }
