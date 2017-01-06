@@ -1,0 +1,19 @@
+#pragma once
+
+class CControl
+{
+public:	
+	CControl() = default;
+	bool CreateSocket();
+	bool TuneSocket(int port, ULONG address);
+	bool TuneSocket(int port, std::string const &address);
+	bool SendMes(std::string const &message);
+	bool WaitSend(std::vector<std::string> &messages, size_t messageNumber);
+
+
+	~CControl();
+private:
+
+	SOCKET m_socket;
+};
+
