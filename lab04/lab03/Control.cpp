@@ -11,7 +11,7 @@
 
 
 
-bool CControl::CreateSocket()
+bool CControlSocket::CreateSocket()
 {
 	WSADATA ws;
 	if (FAILED(WSAStartup(MAKEWORD(2, 2), &ws)))
@@ -34,7 +34,7 @@ bool CControl::CreateSocket()
 	return true;
 }
 
-bool CControl::TuneSocket(int port, ULONG address)
+bool CControlSocket::TuneSocket(int port, ULONG address)
 {
 
 	SOCKADDR_IN sin;
@@ -53,7 +53,7 @@ bool CControl::TuneSocket(int port, ULONG address)
 	return true;
 }
 
-bool CControl::TuneSocket(int port, std::string const & address)
+bool CControlSocket::TuneSocket(int port, std::string const & address)
 {
 	LPHOSTENT hostEnt;
 	hostEnt = gethostbyname(address.c_str());
@@ -82,7 +82,7 @@ bool CControl::TuneSocket(int port, std::string const & address)
 	return true;
 }
 
-bool CControl::SendMes(std::string const & message)
+bool CControlSocket::SendMes(std::string const & message)
 {
 
 	if (send(this->m_socket, message.c_str(), static_cast<int>(message.size()), 0) == SOCKET_ERROR)
@@ -99,7 +99,7 @@ bool CControl::SendMes(std::string const & message)
 
 
 
-bool CControl::WaitSend(std::vector<std::string>& messages, size_t messageNumber)
+bool CControlSocket::WaitSend(std::vector<std::string>& messages, size_t messageNumber)
 {
 	size_t innerCount = 0;
 	while (innerCount < messageNumber)
@@ -150,7 +150,7 @@ bool CControl::WaitSend(std::vector<std::string>& messages, size_t messageNumber
 	return true;
 }
 
-CControl::~CControl()
+CControlSocket::~CControlSocket()
 {
 	closesocket(this->m_socket);
 }

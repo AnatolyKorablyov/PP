@@ -7,22 +7,17 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc < 3)
+	if (argc != 3)
 	{
 		std::cerr << "Error! Usage program.exe <processes number> <iterations number>" << std::endl;
 		return EXIT_FAILURE;
 	}
 
-	try
-	{
-		CAppLauncher launcher(argv);
-		launcher.Run();
-		return 0;
-	}
-	catch(std::exception &ex)
-	{
-		std::cerr << ex.what() << std::endl;
-	}
+	unsigned clientsNum = atoi(argv[1]);
+	unsigned iterationsNum = atoi(argv[2]);
+	CAppLauncher launcher(clientsNum, iterationsNum);
+	launcher.Run();
+	return 0;
 	system("pause");
 }
 

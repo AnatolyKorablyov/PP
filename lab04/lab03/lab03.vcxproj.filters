@@ -24,6 +24,9 @@
     <ClCompile Include="Control.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClientManipulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -35,7 +38,7 @@
     <ClInclude Include="Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CorrectRandom.h">
+    <ClInclude Include="ClientManipulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

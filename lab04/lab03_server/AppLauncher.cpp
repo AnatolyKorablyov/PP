@@ -4,48 +4,33 @@
 #include <iostream>
 #include <Windows.h>
 #include <chrono>
+#include <random>
+#include <sstream>
 
 #include "../lab03/Control.h"
-#include "../lab03/CorrectRandom.h"
 #include "AppLauncher.h"
 
 
-CAppLauncher::CAppLauncher(char * argv[])
-	: m_itNumber(atoi(argv[2]))
-	, m_procNumber(atoi(argv[1]))
+CAppLauncher::CAppLauncher(unsigned m_procNum, unsigned m_itNum)
+	: m_itNumber(m_itNum)
+	, m_procNumber(m_procNum)
 {
 }
 
 void CAppLauncher::Run()
 {
 	int failedProc = 0;
-	//for (size_t i = 0; i != m_procNumber; ++i)
-	//{
-	//	STARTUPINFO si;
-	//	PROCESS_INFORMATION pi;
-	//	ZeroMemory(&si, sizeof(si));
-	//	/*std::string commandLine = "lab03.exe " + NumberToString(m_itNumber) + " " + NumberToString(i + 1);
-
-	//	commandLine += " socket";
-
-	//	SettingProcess(si);
-
-	//	if (!CreateProcess(NULL, (LPSTR)commandLine.data(), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi))
-	//	{
-	//		++failedProc;
-	//		std::cout << "Could't create a process. Program will continue to work without it" << std::endl;
-	//		continue;
-	//	}*/
-
-
-	//	m_startUpInfos.push_back(si);
-	//	m_processesInformation.push_back(pi);
-	//}
-	//m_procNumber -= failedProc;
-
 	WaitConnected();
 	WaitMessages();
-	//SendMessages();
+}
+
+template <typename T>
+std::string NumberToString(T number)
+{
+	std::ostringstream os;
+	os << number;
+	return os.str();
+
 }
 
 void CAppLauncher::SettingProcess(STARTUPINFO &si)
@@ -72,32 +57,43 @@ void CAppLauncher::WaitConnected()
 	auto start = std::chrono::system_clock::now();
 	std::vector<std::string> messages;
 
-	CControl helper;
-	helper.CreateSocket();
-	helper.TuneSocket(11111, INADDR_ANY);		//192.168.0.4
-	helper.WaitSend(messages, m_procNumber);
+	CControlSocket controlSocket;
+	controlSocket.CreateSocket();
+	controlSocket.TuneSocket(11111, INADDR_ANY);
+	controlSocket.WaitSend(messages, m_procNumber);
+
+	bool divMode = true;
+	if (m_itNumber % m_procNumber == 0)
+	{
+		divMode = false;
+	}
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - start;
 	std::cout << "Time : " << diff.count() << std::endl;
-	for (auto const &mes : messages)
+	for (size_t it = 0; it < messages.size(); ++it)
 	{
-		std::cout << mes << std::endl;
-		SendMessages(mes);
+		auto mes = messages[it];
+		unsigned numIter = m_itNumber / m_procNumber;
+		if (divMode && it == messages.size() - 1)
+		{
+			numIter += m_itNumber % m_procNumber;
+		}
+		
+		SendMessages(mes, NumberToString(numIter));
 	}
 }
 
-void CAppLauncher::SendMessages(std::string number)
+void CAppLauncher::SendMessages(std::string number, const std::string & iterations)
 {
 	unsigned num = atoi(number.c_str());
 
-	std::cout << num << std::endl;
 	std::vector<std::string> messages;
 
-	CControl helper;
-	helper.CreateSocket();
-	helper.TuneSocket(num, "localhost");	//192.168.0.4
-	helper.SendMes("privet");
+	CControlSocket controlSocket;
+	controlSocket.CreateSocket();
+	controlSocket.TuneSocket(num, "localhost");
+	controlSocket.SendMes(iterations);
 }
 
 void CAppLauncher::WaitMessages()
@@ -105,10 +101,10 @@ void CAppLauncher::WaitMessages()
 	auto start = std::chrono::system_clock::now();
 	std::vector<std::string> messages;
 
-	CControl helper;
-	helper.CreateSocket();
-	helper.TuneSocket(11111, INADDR_ANY);		//192.168.0.4
-	helper.WaitSend(messages, m_procNumber);
+	CControlSocket controlSocket;
+	controlSocket.CreateSocket();
+	controlSocket.TuneSocket(11111, INADDR_ANY);
+	controlSocket.WaitSend(messages, m_procNumber);
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - start;

@@ -112,7 +112,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\lab03\Control.h" />
-    <ClInclude Include="..\lab03\CorrectRandom.h" />
     <ClInclude Include="AppLauncher.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

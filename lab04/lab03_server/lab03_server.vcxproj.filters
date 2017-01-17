@@ -27,9 +27,6 @@
     <ClInclude Include="..\lab03\Control.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\lab03\CorrectRandom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppLauncher.cpp">

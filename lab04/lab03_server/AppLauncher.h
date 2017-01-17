@@ -3,13 +3,11 @@
 class CAppLauncher
 {
 public:
-	CAppLauncher(char *argv[]);
+	CAppLauncher(size_t m_procNum, size_t m_itNum);
 	void Run();
 	~CAppLauncher();
 	void WaitConnected();
-	void SendMessages(std::string number);
-	void SendMessages(unsigned number);
-	void SendMessages();
+	void SendMessages(std::string number, const std::string & iterations);
 private:
 	void WaitMessages();
 	void SettingProcess(STARTUPINFO &si);
