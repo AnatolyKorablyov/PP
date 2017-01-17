@@ -24,7 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\lab03\Control.h">
+    <ClInclude Include="..\lab03\ControlSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\lab03\Control.cpp">
+    <ClCompile Include="..\lab03\ControlSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

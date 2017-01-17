@@ -21,10 +21,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Control.cpp">
+    <ClCompile Include="ClientManipulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientManipulation.cpp">
+    <ClCompile Include="ControlSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,10 +35,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Control.h">
+    <ClInclude Include="ClientManipulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientManipulation.h">
+    <ClInclude Include="ControlSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

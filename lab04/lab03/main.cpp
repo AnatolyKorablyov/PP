@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <vector>
 #include <string>
-#include "Control.h"
+#include "ControlSocket.h"
 #include "ClientManipulation.h"
 
 #pragma comment(lib, "WS2_32.lib")
@@ -16,10 +16,16 @@
 
 int main(int argc, char *argv[])
 {
-	std::string processName = std::string(argv[1]);
+	if (argc < 2)
+	{
+		std::cerr << "Error! Usage program.exe <ip_server>" << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	std::string ipServer = std::string(argv[1]);
 	
 	CClientManipulation clientMan;
-	clientMan.Run(processName);
+	clientMan.Run(ipServer);
 		
 
 	system("pause");

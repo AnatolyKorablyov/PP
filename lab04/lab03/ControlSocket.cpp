@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "Control.h"
+#include "ControlSocket.h"
 
 #pragma comment(lib, "WS2_32.lib")
 #pragma comment(lib, "wsock32.lib")

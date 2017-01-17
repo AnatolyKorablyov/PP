@@ -11,7 +11,7 @@
 #include <string>
 #include <random>
 #include <sstream>
-#include "Control.h"
+#include "ControlSocket.h"
 
 #pragma comment(lib, "WS2_32.lib")
 #pragma comment(lib, "wsock32.lib")
@@ -34,16 +34,20 @@ std::string NumberToString(T number)
 
 }
 
-void CClientManipulation::Run(const std::string & processName)
+bool CClientManipulation::Run(const std::string & ipServ)
 {
 	unsigned number = RandomRangeFloatInClient(0, 200);
 	std::cout << " port " << number << std::endl;
-	ConnectToServer(number, processName);
+	if (!ConnectToServer(number, ipServ))
+	{
+		return 0;
+	}
 	if (ConnectToClient(number))
 	{
 		Sleep(1000);
-		TransmitDataOnServer(m_iterations, GetPi(m_iterations), processName);
+		TransmitDataToServer(m_iterations, GetPi(m_iterations), ipServ);
 	}
+	return true;
 }
 
 int CClientManipulation::RandomRangeFloatInClient(int a, int b)
@@ -54,14 +58,14 @@ int CClientManipulation::RandomRangeFloatInClient(int a, int b)
 	return dist(gen);
 }
 
-void CClientManipulation::ConnectToServer(unsigned Nmax, std::string const &processName)
+bool CClientManipulation::ConnectToServer(unsigned Nmax, std::string const &ipServ)
 {
 
 	std::vector<std::string> messages;
 	CControlSocket helper;
 	helper.CreateSocket();
-	helper.TuneSocket(11111, "localhost");
-	helper.SendMes(NumberToString(Nmax));
+	helper.TuneSocket(11111, ipServ);
+	return helper.SendMes(NumberToString(Nmax));
 
 }
 
@@ -72,18 +76,19 @@ bool CClientManipulation::ConnectToClient(unsigned Nmax)
 	CControlSocket helper;
 	helper.CreateSocket();
 	helper.TuneSocket(Nmax, INADDR_ANY);
+	std::cout << "Waiting.." << std::endl;
 	helper.WaitSend(messages, 1);
 	m_iterations = atoi(messages[0].c_str());
 	return true;
 }
 
-void CClientManipulation::TransmitDataOnServer(size_t Nmax, double Pi, std::string const &processName)
+void CClientManipulation::TransmitDataToServer(size_t Nmax, double Pi, std::string const &ipServ)
 {
-	std::string info = processName + ", " + NumberToString(Nmax) + ", Pi= " + NumberToString(Pi);
+	std::string info = NumberToString(Nmax) + ", Pi= " + NumberToString(Pi);
 
 	CControlSocket helper;
 	helper.CreateSocket();
-	helper.TuneSocket(11111, "localhost");
+	helper.TuneSocket(11111, ipServ);
 	helper.SendMes(info);
 }
 
@@ -95,8 +100,8 @@ double CClientManipulation::GetPi(size_t iterationsNumber)
 	double Ncirc = 0;
 	for (size_t i = 0; i < Nmax; ++i)
 	{
-		int x = RandomRangeFloatInClient(0.f, m_radius);
-		int y = RandomRangeFloatInClient(0.f, m_radius);
+		int x = RandomRangeFloatInClient(0, m_radius);
+		int y = RandomRangeFloatInClient(0, m_radius);
 		if (pow(x, 2) + pow(y, 2) <= pow(m_radius, 2))
 		{
 			++Ncirc;

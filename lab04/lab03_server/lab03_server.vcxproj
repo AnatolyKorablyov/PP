@@ -111,13 +111,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\lab03\Control.h" />
+    <ClInclude Include="..\lab03\ControlSocket.h" />
     <ClInclude Include="AppLauncher.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\lab03\Control.cpp" />
+    <ClCompile Include="..\lab03\ControlSocket.cpp" />
     <ClCompile Include="AppLauncher.cpp" />
     <ClCompile Include="lab03_server_main.cpp" />
     <ClCompile Include="stdafx.cpp" />

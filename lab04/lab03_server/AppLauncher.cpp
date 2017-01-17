@@ -7,7 +7,7 @@
 #include <random>
 #include <sstream>
 
-#include "../lab03/Control.h"
+#include "../lab03/ControlSocket.h"
 #include "AppLauncher.h"
 
 
@@ -109,9 +109,9 @@ void CAppLauncher::WaitMessages()
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = end - start;
 	std::cout << "Time : " << diff.count() << std::endl;
-	for (auto const &mes : messages)
+	for (size_t it = 0; it < messages.size(); ++it)
 	{
-		std::cout << mes << std::endl;
+		std::cout << it + 1 << ") " << messages[it] << std::endl;
 	}
 	system("pause");
 }
